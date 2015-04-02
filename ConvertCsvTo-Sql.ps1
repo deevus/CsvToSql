@@ -11,8 +11,14 @@ require("wc")
 # get number of lines
 $nlines = $(get-content $CsvPath | wc -l)
 
+# remove trailing whitespace from columns
+$sed_trail_ws = "s:[ \t]*,:,:g"
+
+# escape single quotes
+$sed_single_quote = "s:\d039:\d039\d039:g"
+
 # do the work
-$csv_str = get-content $CsvPath | sed 's:[ \t]*,:,:g; s:\d039:\d039\d039:g' 
+$csv_str = get-content $CsvPath | sed "$sed_trail_ws;$sed_single_quote"
 $result = $csv_str | awk -f csvtosql.awk -v nlines=$nlines
 
 if($OutputFile) {
