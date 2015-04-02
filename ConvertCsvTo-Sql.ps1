@@ -1,7 +1,7 @@
-param($CsvPath, $OutputFile)
+param([parameter(mandatory=$true)]$CsvPath, $OutputFile)
 
 # import lib functions
-. "./CsvToSql-Lib.ps1"
+. "$psscriptroot/CsvToSql-Lib.ps1"
 
 # required utils
 require("awk")
@@ -19,7 +19,7 @@ $sed_single_quote = "s:\d039:\d039\d039:g"
 
 # do the work
 $csv_str = get-content $CsvPath | sed "$sed_trail_ws;$sed_single_quote"
-$result = $csv_str | awk -f csvtosql.awk -v nlines=$nlines
+$result = $csv_str | awk -f "$psscriptroot/csvtosql.awk" -v nlines=$nlines
 
 if($OutputFile) {
   $result | out-file -encoding utf8 $OutputFile
