@@ -6,6 +6,7 @@ param($CsvPath, $OutputFile)
 # required utils
 require("awk")
 require("sed")
+require("wc")
 
 # get number of lines
 $nlines = $(get-content $CsvPath | wc -l)
