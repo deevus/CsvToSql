@@ -1,27 +1,27 @@
 BEGIN { FS="," }
 {
-  num_fields = csv_parse($0, row, ",", "\"", "''", "\\n", 1);
-  # get header row names
-  if (NR == 1) {
-    num_fields = csv_parse($0, col, ",", "\"", "''", "\\n", 1);
-  }
-  # process every other row
+    num_fields = csv_parse($0, row, ",", "\"", "''", "\\n", 1);
+    # get header row names
+    if (NR == 1) {
+        num_fields = csv_parse($0, col, ",", "\"", "''", "\\n", 1);
+    }
+    # process every other row
 	else {
-    # start with select text
+        # start with select text
 		printf "%s", "SELECT "
 
-    # iterate each column value
-    for (i = 1; i<=num_fields; i++) {
-      printf "%s", "'" row[i] "' AS '" col[i] "'"
+        # iterate each column value
+        for (i = 1; i<=num_fields; i++) {
+            printf "%s", "'" row[i] "' AS '" col[i] "'"
 
-      # add a comma except for last row
-      if (i < num_fields) printf "%s", ", "
-    }
+            # add a comma except for last row
+            if (i < num_fields) printf "%s", ", "
+        }
 
-    # nlines is the number of lines in the file
-    # so that we know when not to union
-		if (NR != nlines) print " UNION ALL"
-    else print "" # end with new line
+        # nlines is the number of lines in the file
+        # so that we know when not to union
+    	if (NR != nlines) print " UNION ALL"
+        else print "" # end with new line
 	}
 }
 
